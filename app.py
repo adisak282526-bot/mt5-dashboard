@@ -26,8 +26,8 @@ if data:
     equity = data.get("equity", 0.0)
     floating_pl = equity - balance
     
-    target_game = 20.0
-    daily_target = 100.0
+    target_game = 200.0
+    daily_target = 10000.0
     
     wins = int(floating_pl // target_game) if floating_pl > 0 else 0
     current_round_profit = floating_pl % target_game if floating_pl > 0 else floating_pl
