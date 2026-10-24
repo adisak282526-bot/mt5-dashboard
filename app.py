@@ -18,8 +18,8 @@ def load_data():
 
 data = load_data()
 
-# หัวข้อแบบกระชับลดพื้นที่ว่าง
-st.markdown("<h2 style='text-align: center; margin-bottom: 0;'>🎮 EA ADIDAS Dashboard</h2>", unsafe_allow_html=True)
+# หัวข้อกระชับ
+st.markdown("<h3 style='text-align: center; margin: 0 0 5px 0;'>🎮 EA ADIDAS Dashboard</h3>", unsafe_allow_html=True)
 
 if data:
     balance = data.get("balance", 0.0)
@@ -41,34 +41,43 @@ if data:
     else:
         rem_color = "#FF4B4B"  # สีแดง
 
-    # --- ส่วนที่ 1: การ์ดหลัก (ระยะทางจบเกม + เป้าหมายรอบ) ---
+    # --- ส่วนที่ 1: การ์ดระยะทางจบเกม ---
     st.markdown(f"""
-        <div style="background-color: #1E1E1E; padding: 10px; border-radius: 10px; text-align: center; border: 1px solid #333; margin-top: 5px;">
-            <p style="margin: 0; color: #888; font-size: 14px;">🎯 เป้าหมายรอบนี้ (${target_game:.0f}) | เหลือระยะทางจบเกม</p>
-            <h1 style="margin: 2px 0; color: {rem_color}; font-size: 36px;">${remaining:.2f} USD</h1>
+        <div style="background-color: #1E1E1E; padding: 10px; border-radius: 10px; text-align: center; border: 1px solid #333; margin-bottom: 5px;">
+            <p style="margin: 0; color: #888; font-size: 13px;">🎯 เป้าหมายรอบนี้ (${target_game:.0f}) | เหลือระยะทางจบเกม</p>
+            <h1 style="margin: 0; color: {rem_color}; font-size: 34px;">${remaining:.2f} USD</h1>
         </div>
     """, unsafe_allow_html=True)
     
     st.progress(progress)
 
-    # --- ส่วนที่ 2: สรุปผลงานประจำวันแบบ 2 คอลัมน์กระชับ ---
+    # --- ส่วนที่ 2: สรุปผลงานประจำวัน ---
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown(f"**🥇 จบเกม:** `{wins} รอบ`")
+        st.markdown(f"<p style='margin: 0; font-size: 14px;'>🥇 <b>จบเกม:</b> {wins} รอบ</p>", unsafe_allow_html=True)
     with col2:
-        st.markdown(f"**🚩 เป้าใหญ่:** `{daily_progress * 100:.1f}%`")
+        st.markdown(f"<p style='margin: 0; font-size: 14px;'>🚩 <b>เป้าใหญ่:</b> {daily_progress * 100:.1f}%</p>", unsafe_allow_html=True)
     
     st.progress(daily_progress)
 
-    # --- ส่วนที่ 3: สถานะพอร์ตแบบบรรทัดเดียวจบ ---
-    st.markdown("---")
-    c1, c2, c3 = st.columns(3)
-    c1.metric(label="💳 Bal", value=f"${balance:,.0f}")
-    c2.metric(label="📈 Eq", value=f"${equity:,.1f}")
-    c3.metric(label="📊 P/L", value=f"${floating_pl:,.2f}")
+    # --- ส่วนที่ 3: สถานะพอร์ต บังคับบรรทัดเดียว (Bal / Eq / P/L) ---
+    st.markdown(f"""
+        <div style="background-color: #1E1E1E; padding: 8px 5px; border-radius: 8px; border: 1px solid #333; margin-top: 10px; display: flex; justify-content: space-around; text-align: center;">
+            <div>
+                <p style="margin:0; color:#888; font-size:11px;">💳 Bal</p>
+                <p style="margin:0; font-size:15px; font-weight:bold;">${balance:,.0f}</p>
+            </div>
+            <div style="border-left: 1px solid #333; border-right: 1px solid #333; padding: 0 10px;">
+                <p style="margin:0; color:#888; font-size:11px;">📈 Eq</p>
+                <p style="margin:0; font-size:15px; font-weight:bold;">${equity:,.1f}</p>
+            </div>
+            <div>
+                <p style="margin:0; color:#888; font-size:11px;">📊 P/L</p>
+                <p style="margin:0; color:{'#FFA500' if floating_pl>=0 else '#FF4B4B'}; font-size:15px; font-weight:bold;">${floating_pl:,.2f}</p>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 
 else:
-    st.warning("⏳ รอข้อมูลจากระบบ (auto_push.py)...")
-    
-    
-      
+    st.warning("⏳ รอข้อมูลจากระบบ...")
+        
