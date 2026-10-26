@@ -1,6 +1,7 @@
 import streamlit as st
 import json
 import os
+import time
 
 # ตั้งค่าหน้าจอ Dashboard แบบกระชับ
 st.set_page_config(
@@ -9,6 +10,8 @@ st.set_page_config(
     layout="centered"
 )
 
+# ใช้ ttl=3 เพื่อให้เคลียร์แคชอ่านไฟล์ใหม่ทุกๆ 3 วินาที
+@st.cache_data(ttl=3)
 def load_data():
     file_path = "portfolio_status.json"
     if os.path.exists(file_path):
@@ -80,4 +83,7 @@ if data:
 
 else:
     st.warning("⏳ รอข้อมูลจากระบบ...")
-        
+
+# ระบบ Auto Refresh หน้าร้านทุกๆ 5 วินาที
+time.sleep(5)
+st.rerun()
